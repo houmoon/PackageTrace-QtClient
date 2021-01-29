@@ -9,3 +9,8 @@ int main(int argc, char *argv[])
     w.show();
     return a.exec();
 }
+
+int callApi(char num, char company)
+{
+//    ...
+}

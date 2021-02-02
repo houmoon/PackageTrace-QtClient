@@ -12,9 +12,3 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-
-void MainWindow::on_pushButton_clicked()
-{
-    ui->label1->setText("버튼이 눌렸습니다.");
-}

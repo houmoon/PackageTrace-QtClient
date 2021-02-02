@@ -122,7 +122,7 @@ class PackageTrace:
             
                 
 
-parsel_num = "1111111111112"
+parsel_num = "1"
 parsel_company = "kr.epost"
 
 

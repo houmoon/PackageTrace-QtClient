@@ -48,7 +48,9 @@ class PackageTrace:
     def request_api_track(self):
 
         try:
-            get_parcel = f"https://apis.tracker.delivery/carriers/{self.package_carrier_id}/tracks/{self.package_num}"
+            package_num = self.package_num.replace("-", "")
+
+            get_parcel = f"https://apis.tracker.delivery/carriers/{self.package_carrier_id}/tracks/{package_num}"
 
             respones_parsel = requests.get(get_parcel)
 

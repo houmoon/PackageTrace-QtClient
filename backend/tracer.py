@@ -106,6 +106,7 @@ class PackageTrace:
                 with open('database.json', 'w', encoding='utf-8') as f:
                     f.write(json.dumps(self.database, ensure_ascii=False, indent='\t'))
                     f.close()
+                print("ok")
 
             elif flag == 1:
                 print("not to do")
@@ -115,6 +116,7 @@ class PackageTrace:
                 with open('database.json', 'w', encoding='utf-8') as f:
                     f.write(json.dumps(self.database, ensure_ascii=False, indent='\t'))
                     f.close()
+                print("merged")
             
         
         except Exception as e:
@@ -122,12 +124,13 @@ class PackageTrace:
             
                 
 
-parsel_num = "1"
-parsel_company = "kr.epost"
+if len(sys.argv) != 3:
+    print("Arguments Error.")
+    sys.exit()
 
-
-
+# run command argument 
+parsel_company = sys.argv[1]
+parsel_num = sys.argv[2]
+# python3 tracer.py "carriers_id" "parsel_num"        
 
 app = PackageTrace(parsel_num, parsel_company)
-
-

@@ -5,10 +5,11 @@ import sys
 
 class PackageTrace:
 
-    def __init__(self, num, carrier):
+    def __init__(self, num, carrier, name):
         self.carriers = {}
         self.package_num = num
         self.package_carrier_id = carrier
+        self.name = name 
         self.package_response_result = {}
         self.database = []
 
@@ -56,7 +57,7 @@ class PackageTrace:
 
             self.package_response_result = respones_parsel.json().copy()
 
-            self.package_response_result["id"] = {"num": self.package_num, "carrier_id": self.package_carrier_id}
+            self.package_response_result["id"] = {"num": self.package_num, "carrier_id": self.package_carrier_id, "name": self.name}
             
             
 
@@ -124,13 +125,14 @@ class PackageTrace:
             
                 
 
-if len(sys.argv) != 3:
+if len(sys.argv) != 4:
     print("Arguments Error.")
     sys.exit()
 
 # run command argument 
 parsel_company = sys.argv[1]
 parsel_num = sys.argv[2]
-# python3 tracer.py "carriers_id" "parsel_num"        
+parsel_name = sys.argv[3]
+# python3 tracer.py "carriers_id" "parsel_num" "parsel_name"      
 
-app = PackageTrace(parsel_num, parsel_company)
+app = PackageTrace(parsel_num, parsel_company, parsel_name)

@@ -10,14 +10,17 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    traceitemwidget.cpp
 
 HEADERS += \
     jsondata.h \
-    mainwindow.h
+    mainwindow.h \
+    traceitemwidget.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    traceitemwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

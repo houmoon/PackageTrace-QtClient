@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "traceitemwidget.h"
+
 #include <QProcess>
 #include <QMessageBox>
 #include <QJsonObject>
@@ -38,6 +40,8 @@ void MainWindow::on_Button_Refresh_clicked()
         process->waitForFinished();
         process->close();
 
+        TraceItemWidget *itemwidget = new TraceItemWidget(this->ui->scrollArea);
+        ui->scrollArea->layout()->addWidget(itemwidget);
 
         //json 데이터를 역직렬화해서 아이템에 배송내역을 넣고, 아이템을 구성해 위젯에 할당하는 메서드 필요.
 

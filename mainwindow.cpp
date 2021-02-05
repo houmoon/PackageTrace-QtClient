@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "traceitemwidget.h"
+#include "createnewtracewindow.h"
 
 #include <QProcess>
 #include <QMessageBox>
@@ -33,15 +34,13 @@ void MainWindow::on_Button_Refresh_clicked()
 
         if(process->WriteError)
         {
+            QString ErrorMsg = "프로세스를 불러오지 못했습니다.";
             QMessageBox MsgBox;
             MsgBox.setFixedSize(500,200);
-            MsgBox.warning(0,"에러","프로세스를 불러오지 못했습니다.");
+            MsgBox.warning(0,"에러",ErrorMsg);
         }
         process->waitForFinished();
         process->close();
-
-        TraceItemWidget *itemwidget = new TraceItemWidget(this->ui->scrollArea);
-        ui->scrollArea->layout()->addWidget(itemwidget);
 
         //json 데이터를 역직렬화해서 아이템에 배송내역을 넣고, 아이템을 구성해 위젯에 할당하는 메서드 필요.
 
@@ -52,3 +51,14 @@ void MainWindow::LoadJsonData()
 
 }
 
+void MainWindow::CreateNewTraceItem(QString name,QString num, QString type)
+{
+    TraceItemWidget *itemwidget = new TraceItemWidget(this->ui->scrollArea);
+    ui->TraceScrollList->layout()->addWidget(itemwidget);
+}
+
+void MainWindow::on_Button_AddTrace_clicked()
+{
+    CreateNewTraceWindow *newwindow = new CreateNewTraceWindow(this);
+    newwindow->show();
+}

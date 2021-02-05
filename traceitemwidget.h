@@ -1,13 +1,13 @@
 #ifndef TRACEITEMWIDGET_H
 #define TRACEITEMWIDGET_H
 
-#include <QWidget>
+#include <QPushButton>
 
 namespace Ui {
 class TraceItemWidget;
 }
 
-class TraceItemWidget : public QWidget
+class TraceItemWidget : public QPushButton
 {
     Q_OBJECT
 
@@ -17,6 +17,7 @@ public:
 
 private:
     Ui::TraceItemWidget *ui;
+    void OnClicked();
 };
 
 #endif // TRACEITEMWIDGET_H

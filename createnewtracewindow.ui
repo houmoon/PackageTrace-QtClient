@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CreateNewTraceWindow</class>
+ <widget class="QWidget" name="CreateNewTraceWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>226</width>
+    <height>150</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>226</width>
+    <height>150</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>226</width>
+    <height>150</height>
+   </size>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::NoContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string>새로운 배송</string>
+  </property>
+  <widget class="QLineEdit" name="num">
+   <property name="geometry">
+    <rect>
+     <x>15</x>
+     <y>44</y>
+     <width>200</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>22</height>
+    </size>
+   </property>
+   <property name="inputMask">
+    <string/>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="placeholderText">
+    <string>운송장번호를 입력해주세요</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="company">
+   <property name="geometry">
+    <rect>
+     <x>7</x>
+     <y>72</y>
+     <width>220</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>220</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="placeholderText">
+    <string>택배사를 선택해주세요</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>우체국택배</string>
+    </property>
+    <property name="icon">
+     <iconset resource="Resources.qrc">
+      <normaloff>:/icons/icon_epost.png</normaloff>:/icons/icon_epost.png</iconset>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>CJ 대한통운</string>
+    </property>
+    <property name="icon">
+     <iconset resource="Resources.qrc">
+      <normaloff>:/icons/icon_cj.png</normaloff>:/icons/icon_cj.png</iconset>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>롯데택배</string>
+    </property>
+    <property name="icon">
+     <iconset resource="Resources.qrc">
+      <normaloff>:/icons/icon_lotte.png</normaloff>:/icons/icon_lotte.png</iconset>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>로젠택배</string>
+    </property>
+    <property name="icon">
+     <iconset resource="Resources.qrc">
+      <normaloff>:/icons/icon_logen.png</normaloff>:/icons/icon_logen.png</iconset>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>CU 편의점택배</string>
+    </property>
+    <property name="icon">
+     <iconset resource="Resources.qrc">
+      <normaloff>:/icons/icon_cu.png</normaloff>:/icons/icon_cu.png</iconset>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>GS 포스트박스</string>
+    </property>
+    <property name="icon">
+     <iconset resource="Resources.qrc">
+      <normaloff>:/icons/icon_gs.png</normaloff>:/icons/icon_gs.png</iconset>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string/>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string/>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string/>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="Button_AddTrace">
+   <property name="geometry">
+    <rect>
+     <x>58</x>
+     <y>105</y>
+     <width>111</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="baseSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>추가</string>
+   </property>
+   <property name="autoDefault">
+    <bool>false</bool>
+   </property>
+   <property name="default">
+    <bool>false</bool>
+   </property>
+   <property name="flat">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="name">
+   <property name="geometry">
+    <rect>
+     <x>15</x>
+     <y>14</y>
+     <width>200</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>22</height>
+    </size>
+   </property>
+   <property name="inputMask">
+    <string/>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="placeholderText">
+    <string>이름을 입력해주세요</string>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="Resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

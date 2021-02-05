@@ -14,12 +14,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void LoadJsonData();
+    void CreateNewTraceItem(QString name,QString num, QString type);
 
 private slots:
     void on_Button_Refresh_clicked();
 
+    void on_Button_AddTrace_clicked();
+
 private:
     Ui::MainWindow *ui;
-    void LoadJsonData();
 };
 #endif // MAINWINDOW_H

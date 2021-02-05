@@ -13,6 +13,7 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    jsondata.h \
     mainwindow.h
 
 FORMS += \

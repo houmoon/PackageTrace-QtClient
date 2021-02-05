@@ -15,7 +15,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void LoadJsonData();
-    void CreateNewTraceItem(QString name,QString num, QString type);
+    void ShowTraceExData();
+    void CreateNewTraceItem(const QString *name = nullptr, const QString *num = nullptr ,const QPixmap *icon = nullptr, const QString *state = nullptr);
 
 private slots:
     void on_Button_Refresh_clicked();

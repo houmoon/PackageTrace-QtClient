@@ -51,10 +51,20 @@ void MainWindow::LoadJsonData()
 
 }
 
-void MainWindow::CreateNewTraceItem(QString name,QString num, QString type)
+void MainWindow::ShowTraceExData()
 {
-    TraceItemWidget *itemwidget = new TraceItemWidget(this->ui->scrollArea);
+    ui->TraceExScrollList->setEnabled(true);
+}
+
+void MainWindow::CreateNewTraceItem(const QString *name, const QString *num ,const QPixmap *icon, const QString *state)
+{
+    TraceItemWidget *itemwidget = new TraceItemWidget(this,this->ui->TraceScrollList);
+    itemwidget->ui->name->setText(*name);
+    itemwidget->ui->num->setText(*num);
+    itemwidget->ui->CompanyIcon->setPixmap(*icon);
+
     ui->TraceScrollList->layout()->addWidget(itemwidget);
+
 }
 
 void MainWindow::on_Button_AddTrace_clicked()

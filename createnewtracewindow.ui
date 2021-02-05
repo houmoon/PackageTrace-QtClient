@@ -61,8 +61,14 @@
    <property name="text">
     <string/>
    </property>
+   <property name="maxLength">
+    <number>25</number>
+   </property>
    <property name="placeholderText">
     <string>운송장번호를 입력해주세요</string>
+   </property>
+   <property name="clearButtonEnabled">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QComboBox" name="company">
@@ -220,8 +226,17 @@
    <property name="text">
     <string/>
    </property>
+   <property name="maxLength">
+    <number>20</number>
+   </property>
+   <property name="cursorPosition">
+    <number>0</number>
+   </property>
    <property name="placeholderText">
     <string>이름을 입력해주세요</string>
+   </property>
+   <property name="clearButtonEnabled">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>

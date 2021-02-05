@@ -22,6 +22,7 @@ private slots:
 private:
     Ui::CreateNewTraceWindow *ui;
     MainWindow *parentWnd;
+    QPixmap *pixmap(const int index);
 };
 
 #endif // CREATENEWTRACEWINDOW_H

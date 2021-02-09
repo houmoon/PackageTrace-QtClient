@@ -6,7 +6,7 @@ try:
 except ModuleNotFoundError:
     import subprocess
 
-    subprocess.call(["python", "-m", "pip", "install", "-r", "requirements.txt"])
+    subprocess.call(["python", "-m", "pip", "install", "-U", "-r", "requirements.txt"])
 finally:
     import requests
     import json

@@ -6,7 +6,7 @@ try:
 except ModuleNotFoundError:
     import subprocess
 
-    subprocess.call(["python3", "-m", "pip", "install", "-r", "requirements.txt"])
+    subprocess.call(["python", "-m", "pip", "install", "-r", "requirements.txt"])
 finally:
     import requests
     import json
@@ -21,7 +21,7 @@ class PackageTrace:
         self.package_carrier_id = carrier
         self.name = name 
         self.package_response_result = {}
-        self.database = []
+        self.database = {"traces":[]}
 
         self.request_api_carriers()
         self.request_api_track()
@@ -97,17 +97,17 @@ class PackageTrace:
 
         try:
             flag = 0
-            for i in range(0,len(self.database)):
-                if self.database[i]["id"]["num"] == self.package_num and self.database[i]["id"]["carrier_id"] == self.package_carrier_id:
+            for i in range(0,len(self.database['traces'])):
+                if self.database['traces'][i]["id"]["num"] == self.package_num and self.database['traces'][i]["id"]["carrier_id"] == self.package_carrier_id:
                     # colision
-                    if self.database[i] == self.package_response_result:
+                    if self.database['traces'][i] == self.package_response_result:
                         # pass
                         flag = 1
                         break
                     else:
                         # merge
                         flag = 2
-                        self.database[i] = self.package_response_result
+                        self.database['traces'][i] = self.package_response_result
                         break
                 else:
                     pass
@@ -115,7 +115,9 @@ class PackageTrace:
             
             if flag == 0:
                 # data exists. appending
-                self.database.append(self.package_response_result)
+                # print(self.database)
+                # print(self.package_response_result)
+                self.database['traces'].append(self.package_response_result)
                 with open('database.json', 'w', encoding='utf-8') as f:
                     f.write(json.dumps(self.database, ensure_ascii=False, indent='\t'))
                     f.close()
@@ -133,7 +135,7 @@ class PackageTrace:
             
         
         except Exception as e:
-            print(e)
+            print(e,e)
             
                 
 

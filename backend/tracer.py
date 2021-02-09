@@ -1,8 +1,18 @@
-import requests
-import json
-import os
-import sys
+try:
+    import requests
+    import json
+    import os
+    import sys
+except ModuleNotFoundError:
+    import subprocess
 
+    subprocess.call(["python3", "-m", "pip", "install", "-r", "requirements.txt"])
+finally:
+    import requests
+    import json
+    import os
+    import sys
+    
 class PackageTrace:
 
     def __init__(self, num, carrier, name):

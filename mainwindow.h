@@ -16,6 +16,7 @@ public:
     ~MainWindow();
     void LoadJsonData();
     void ShowTraceExData();
+    void UpdateTraces(const QString *name, const QString *num, const QString *company);
     void CreateNewTraceItem(const QString *name = nullptr, const QString *num = nullptr ,const QPixmap *icon = nullptr, const QString *state = nullptr);
 
 private slots:

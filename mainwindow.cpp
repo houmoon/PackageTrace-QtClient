@@ -22,28 +22,27 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_Button_Refresh_clicked()
 {
-        //프로그램 상에 데이터가 없다면 메서드를 실행하지 않고 경고문을 출력하고 종료.
 
-        QString path = QCoreApplication::applicationDirPath();
-        QString  command("python3");
-        QStringList params = QStringList() << "tracer.py" << "kr.cjlogistics" << "637197513201" << "name";
-
-        QProcess *process = new QProcess();
-
-        process->startDetached(command, params, path);
-
-        if(process->WriteError)
-        {
-            QString ErrorMsg = "프로세스를 불러오지 못했습니다.";
-            QMessageBox MsgBox;
-            MsgBox.setFixedSize(500,200);
-            MsgBox.warning(0,"에러",ErrorMsg);
-        }
-        process->waitForFinished();
-        process->close();
+        //json에서 저장되어 있는 배송정보를 가지고 리프레쉬하는 메서드가 필요할듯.파이썬에서 실행.
+        JsonData::TraceData tracedata_test(this);
 
         //json 데이터를 역직렬화해서 아이템에 배송내역을 넣고, 아이템을 구성해 위젯에 할당하는 메서드 필요.
 
+}
+
+void MainWindow::UpdateTraces(const QString *name, const QString *num, const QString *company)
+{
+    QString path = QCoreApplication::applicationDirPath();
+    QString  command("python3");
+    QStringList params = QStringList() << "tracer.py" << *company << *num << *name ;
+
+    QProcess *process = new QProcess();
+
+    process->startDetached(command, params, path);
+    process->waitForFinished();
+    process->close();
+
+    JsonData::TraceData tracedata_test(this);
 }
 
 void MainWindow::LoadJsonData()
@@ -61,7 +60,9 @@ void MainWindow::CreateNewTraceItem(const QString *name, const QString *num ,con
     TraceItemWidget *itemwidget = new TraceItemWidget(this,this->ui->TraceScrollList);
     itemwidget->ui->name->setText(*name);
     itemwidget->ui->num->setText(*num);
+    if(icon != nullptr)
     itemwidget->ui->CompanyIcon->setPixmap(*icon);
+    itemwidget->ui->state->setText(*state);
 
     ui->TraceScrollList->layout()->addWidget(itemwidget);
 

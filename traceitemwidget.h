@@ -25,8 +25,7 @@ public:
 private:
     MainWindow *parentWnd;
     void OnClicked();
-
-    TraceData tracedata;
+    void OnReleased();
 
     //역직렬화한 json 데이터를 위젯 하나당 들고 있어야합니다.
     //데이터는 onclicked 에서 활용되어 세부 정보를 여는데 활용됩니다.

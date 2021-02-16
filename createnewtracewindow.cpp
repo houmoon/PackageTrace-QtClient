@@ -1,6 +1,6 @@
 #include "createnewtracewindow.h"
 #include "ui_createnewtracewindow.h"
-
+#include "clientvariable.h"
 
 CreateNewTraceWindow::CreateNewTraceWindow(MainWindow *mainwindow, QWidget *parent) :
     QWidget(parent),
@@ -19,23 +19,15 @@ void CreateNewTraceWindow::on_Button_AddTrace_clicked()
 {
     const QString name = ui->name->text();
     const QString num = ui->num->text();
-    const QPixmap icon = *pixmap(ui->company->currentIndex());
-    parentWnd->CreateNewTraceItem(&name,&num,&icon);
+    //const QPixmap icon = *pixmap(ui->company->currentIndex());
+
+    const QString company = ClientVariable::IndexToCompanycode(ui->company->currentIndex());
+    parentWnd->UpdateTraces(&name,&num,&company);
 }
 
 QPixmap* CreateNewTraceWindow::pixmap(int index)
 {
-    QPixmap *_pixmap = nullptr;
-
-    switch(index)
-    {
-        case 0: //킹체국
-        _pixmap = new QPixmap(":/icons/icon_epost.png");
-        break;
-        case 1: //대한통운
-        _pixmap = new QPixmap(":/icons/icon_cj.png");
-        break;
-    }
+    QPixmap *_pixmap = new QPixmap(ClientVariable::IndexToIcon(index));
 
     return _pixmap;
 }

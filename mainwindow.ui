@@ -23,10 +23,16 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>어디</string>
+   <string>어디 - 택배 조회 어플리케이션</string>
   </property>
   <property name="statusTip">
    <string/>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="locale">
+   <locale language="Korean" country="SouthKorea"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="palette">
@@ -779,7 +785,7 @@
          <x>0</x>
          <y>0</y>
          <width>273</width>
-         <height>458</height>
+         <height>456</height>
         </rect>
        </property>
        <property name="layoutDirection">
@@ -843,7 +849,7 @@
          <x>0</x>
          <y>0</y>
          <width>574</width>
-         <height>456</height>
+         <height>454</height>
         </rect>
        </property>
        <property name="autoFillBackground">
@@ -1065,7 +1071,7 @@
      <x>0</x>
      <y>0</y>
      <width>913</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="statusTip">

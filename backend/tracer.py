@@ -15,7 +15,7 @@ finally:
     
 class PackageTrace:
 
-    def __init__(self, num, carrier, name):
+    def __init__(self, num=None, carrier=None, name=None):
         self.carriers = {}
         self.package_num = num
         self.package_carrier_id = carrier
@@ -24,11 +24,8 @@ class PackageTrace:
         self.database = {"traces":[]}
 
         self.request_api_carriers()
-        self.request_api_track()
-        self.database_commit()
 
 
-    
     def request_api_carriers(self):
         get_carriers = "https://apis.tracker.delivery/carriers"
         
@@ -136,17 +133,43 @@ class PackageTrace:
         
         except Exception as e:
             print(e,e)
-            
+
+    def request(self):
+        self.request_api_track()
+        self.database_commit()
+
+    def refresh(self):
+        if os.path.isfile('database.json'):
+            try:
+                with open('database.json', 'r', encoding='utf-8') as f:
+                    self.database = json.load(f)
+                    f.close()
+
+            except FileNotFoundError as e:
+                print(e)
+        else:
+            raise FileNotFoundError
+
+        for i in self.database["traces"]:
+            self.package_carrier_id = i['id']['carrier_id']
+            self.package_num = i['id']['num']
+            self.name = i['id']['name']
+
+            self.request()
                 
 
-if len(sys.argv) != 4:
+if len(sys.argv) == 4:
+    # run command argument 
+    parsel_company = sys.argv[1]
+    parsel_num = sys.argv[2]
+    parsel_name = sys.argv[3]
+    # python3 tracer.py "carriers_id" "parsel_num" "parsel_name"      
+    app = PackageTrace(parsel_num, parsel_company, parsel_name)
+
+elif len(sys.argv) == 1:
+    app = PackageTrace()
+    app.refresh()
+
+else:
     print("Arguments Error.")
     sys.exit()
-
-# run command argument 
-parsel_company = sys.argv[1]
-parsel_num = sys.argv[2]
-parsel_name = sys.argv[3]
-# python3 tracer.py "carriers_id" "parsel_num" "parsel_name"      
-
-app = PackageTrace(parsel_num, parsel_company, parsel_name)

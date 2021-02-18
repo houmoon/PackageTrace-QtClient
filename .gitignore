@@ -50,11 +50,7 @@ compile_commands.json
 
 # QtCreator local machine specific files for imported projects
 *creator.user*
-.idea/workspace.xml
+.idea/*
 *.json
 *.xml
-.vs/PackageTrace-QtClient/v16/Browse.VC.db
-.vs/PackageTrace-QtClient/v16/Browse.VC.db-shm
-.vs/PackageTrace-QtClient/v16/Browse.VC.db-wal
-.vs/PackageTrace-QtClient/v16/Browse.VC.opendb
-.vs/slnx.sqlite
+.vs/*

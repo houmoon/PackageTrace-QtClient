@@ -16,147 +16,184 @@ finally:
 class PackageTrace:
 
     def __init__(self, num=None, carrier=None, name=None):
-        self.carriers = {}
         self.package_num = num
         self.package_carrier_id = carrier
-        self.name = name 
+        self.package_name = name 
+
         self.package_response_result = {}
+        self.carriers = {"carriers": []}
         self.database = {"traces":[]}
 
-        self.request_api_carriers()
+        self.database_exist = False
+        self.database_counter = [0,0,0]
+
+        self._carriers_load()
+        self._database_load()
 
 
-    def request_api_carriers(self):
-        get_carriers = "https://apis.tracker.delivery/carriers"
-        
-        if os.path.isfile('carriers.json'):
+    def _database_load(self):
+        """
+        return None
+
+        database.json을 class 변수에 할당하는 작업을 합니다.\n
+        만약 database.json을 찾지 못한다면, 새로운 파일을 생성합니다. 
+
+        """
+
+        if os.path.isfile('database.json'):
             try:
-                with open('carriers.json', 'r', encoding='utf-8') as f:
-                    self.carriers = json.load(f)
+                with open('database.json', 'r', encoding='utf-8') as f:
+                    self.database = json.load(f)
                     f.close()
-            except IOError as e:
-                print(e)
-                
+                    self.database_exist = True 
+            except Exception as e:
+                sys.exit(f"IO error. {e}")
         else:
             try:
-                respones_carriers = requests.get(get_carriers)
-                if respones_carriers.status_code != 200:
-                    raise ConnectionError
-                self.carriers = respones_carriers.json()
-
-                with open('carriers.json', 'w', encoding='utf-8') as f:
-                    f.write(json.dumps(self.carriers, ensure_ascii=False, indent='\t'))
+                with open('database.json', 'w', encoding='utf-8') as f:
+                    f.write(json.dumps(self.database, ensure_ascii=False, indent='\t'))
                     f.close()
+                    self.database_exist = True 
+            except Exception as e:
+                sys.exit(f"IO error. {e}")
+        
+        
+    def _carriers_load(self):
+        """
+        return None
 
-            except ConnectionError as e:
-                print(e)
+        API로부터 carriers 관련 정보를 받아, carriers.json에 직렬화 합니다.\n
+        만약 carriers.json을 찾지 못한다면, 새로운 파일을 생성하여 carriers.json에 직렬화 합니다.
+
+        """
+        get_carriers = "https://apis.tracker.delivery/carriers"
+
+        try:
+            respones_carriers = requests.get(get_carriers)
+            if respones_carriers.status_code != 200:
+                raise ConnectionError
+
+            self.carriers['carriers'] = respones_carriers.json()
+
+            with open('carriers.json', 'w', encoding='utf-8') as f:
+                f.write(json.dumps(self.carriers, ensure_ascii=False, indent='\t'))
+                f.close()
+
+        except ConnectionError as e:
+            print(e)
 
 
-    def request_api_track(self):
+    def _request_api_track(self):
+        """
+        return None
+
+        class 변수의 값을 바탕으로 API GET 요청을 하여 dictonary 형태로 할당합니다.
+        
+        """
 
         try:
             package_num = self.package_num.replace("-", "")
-
             get_parcel = f"https://apis.tracker.delivery/carriers/{self.package_carrier_id}/tracks/{package_num}"
-
             respones_parsel = requests.get(get_parcel)
 
             if respones_parsel.status_code != 200:
                 raise ConnectionError
 
-            self.package_response_result = respones_parsel.json().copy()
-
-            self.package_response_result["id"] = {"num": self.package_num, "carrier_id": self.package_carrier_id, "name": self.name}
+            self.package_response_result = respones_parsel.json()
+            self.package_response_result["id"] = {"num": self.package_num, "carrier_id": self.package_carrier_id, "name": self.package_name}
             
-            
-
         except ConnectionError as e:
-            print(e)
-            sys.exit("null data")
+            sys.exit(f"null data, raised http code: {respones_parsel.status_code}")
 
 
-    def database_commit(self):
+    def _database_commit(self):
+        """
+        return None
 
-        if os.path.isfile('database.json'):
-            try:
-                with open('database.json', 'r', encoding='utf-8') as f:
-                    self.database = json.load(f)
-                    f.close()
+        역직렬화된 데이터베이스에서 충돌, 합병, 삽입을 수행합니다.
 
-            except FileNotFoundError as e:
-                print(e)
-        else:
-            try:
-                with open('database.json', 'w', encoding='utf-8') as f:
-                    f.close()
-            except Exception as e:
-                print(e)
+        """
 
         try:
             flag = 0
             for i in range(0,len(self.database['traces'])):
-                if self.database['traces'][i]["id"]["num"] == self.package_num and self.database['traces'][i]["id"]["carrier_id"] == self.package_carrier_id:
+                if self.database['traces'][i]['id']['num'] == self.package_num and self.database['traces'][i]['id']['carrier_id'] == self.package_carrier_id:
                     # colision
                     if self.database['traces'][i] == self.package_response_result:
                         # pass
                         flag = 1
+                        self.database_counter[1] += 1
                         break
                     else:
                         # merge
                         flag = 2
                         self.database['traces'][i] = self.package_response_result
+                        self.database_counter[2] += 1
                         break
                 else:
                     pass
-            
-            
+                
             if flag == 0:
-                # data exists. appending
-                # print(self.database)
-                # print(self.package_response_result)
                 self.database['traces'].append(self.package_response_result)
-                with open('database.json', 'w', encoding='utf-8') as f:
-                    f.write(json.dumps(self.database, ensure_ascii=False, indent='\t'))
-                    f.close()
-                print("ok")
-
-            elif flag == 1:
-                print("not to do")
-                pass
-
-            elif flag == 2:
-                with open('database.json', 'w', encoding='utf-8') as f:
-                    f.write(json.dumps(self.database, ensure_ascii=False, indent='\t'))
-                    f.close()
-                print("merged")
-            
+                self.database_counter[0] += 1
+            else:
+                pass 
         
         except Exception as e:
-            print(e,e)
+            sys.exit(f"database commit error. {e}")
+
+
+    
+    def _database_push(self):
+        """
+        return None
+
+        데이터베이스를 저장합니다. 
+        """
+
+        if (self.database_counter[0] != 0 or self.database_counter[2] != 0) and self.database_exist == True:
+            with open('database.json', 'w', encoding='utf-8') as f:
+                f.write(json.dumps(self.database, ensure_ascii=False, indent='\t'))
+                f.close()
+
+                print(f"{self.database_counter[0]} Row(s) Pushed, {self.database_counter[2]} Row(s) Merged, {self.database_counter[1]} Row(s) Passed.")
+
+        else:
+            print("no to do")
+
+
+
 
     def request(self):
-        self.request_api_track()
-        self.database_commit()
+        """
+        return None
+
+        입력된 arguments 를 바탕으로 택배 정보를 불러옵니다.
+        """
+        self._request_api_track()
+        self._database_commit()
+        self._database_push()
+
 
     def refresh(self):
-        if os.path.isfile('database.json'):
-            try:
-                with open('database.json', 'r', encoding='utf-8') as f:
-                    self.database = json.load(f)
-                    f.close()
+        """
+        return None
 
-            except FileNotFoundError as e:
-                print(e)
+        택배 정보를 업데이트 합니다. 
+        """
+        if len(self.database['traces']) == 0:
+            sys.exit("no item.")
         else:
-            raise FileNotFoundError
+            for i in self.database['traces']:
+                self.package_carrier_id = i['id']['carrier_id']
+                self.package_num = i['id']['num']
+                self.package_name = i['id']['name']
 
-        for i in self.database["traces"]:
-            self.package_carrier_id = i['id']['carrier_id']
-            self.package_num = i['id']['num']
-            self.name = i['id']['name']
-
-            self.request()
+                self._request_api_track()
+                self._database_commit()
                 
+            self._database_push()
+        
 
 if len(sys.argv) == 4:
     # run command argument 
@@ -165,6 +202,7 @@ if len(sys.argv) == 4:
     parsel_name = sys.argv[3]
     # python3 tracer.py "carriers_id" "parsel_num" "parsel_name"      
     app = PackageTrace(parsel_num, parsel_company, parsel_name)
+    app.request()
 
 elif len(sys.argv) == 1:
     app = PackageTrace()

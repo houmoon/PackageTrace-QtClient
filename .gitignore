@@ -53,3 +53,8 @@ compile_commands.json
 .idea/workspace.xml
 *.json
 *.xml
+.vs/PackageTrace-QtClient/v16/Browse.VC.db
+.vs/PackageTrace-QtClient/v16/Browse.VC.db-shm
+.vs/PackageTrace-QtClient/v16/Browse.VC.db-wal
+.vs/PackageTrace-QtClient/v16/Browse.VC.opendb
+.vs/slnx.sqlite

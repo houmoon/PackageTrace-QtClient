@@ -1,5 +1,6 @@
 
 import urllib.request
+import urllib.error
 import json
 import os
 import sys
@@ -66,15 +67,15 @@ class PackageTrace:
                 if response.status == 200:
                     self.carriers['carriers'] = json.loads(response.read().decode('utf-8'))
                 else:
-                    raise ConnectionError
+                    raise urllib.error.HTTPError
             
             
             with open('carriers.json', 'w', encoding='utf-8') as f:
                 f.write(json.dumps(self.carriers, ensure_ascii=False, indent='\t'))
                 f.close()
 
-        except ConnectionError as e:
-            print(e)
+        except urllib.error.HTTPError as e:
+            print(f"error, raise http error: {e.reason, e.status}")
 
 
     def _request_api_track(self):
@@ -94,12 +95,12 @@ class PackageTrace:
                 if response.status == 200:
                     self.package_response_result = json.loads(response.read().decode('utf-8'))
                 else:
-                    raise ConnectionError
+                    raise urllib.error.HTTPError
 
             self.package_response_result["id"] = {"num": self.package_num, "carrier_id": self.package_carrier_id, "name": self.package_name}
             
-        except ConnectionError as e:
-            sys.exit(f"null data, raised http code: {respones.status}")
+        except urllib.error.HTTPError as e:
+            sys.exit(f"null data, raised http error: {e.reason, e.status}")
 
 
     def _database_commit(self):
@@ -156,8 +157,6 @@ class PackageTrace:
 
         else:
             print("no to do")
-
-
 
 
     def request(self):

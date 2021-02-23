@@ -1,17 +1,8 @@
-try:
-    import requests
-    import json
-    import os
-    import sys
-except ModuleNotFoundError:
-    import subprocess
 
-    subprocess.call(["python3", "-m", "pip", "install", "--user", "-r", "requirements.txt"])
-finally:
-    import requests
-    import json
-    import os
-    import sys
+import urllib.request
+import json
+import os
+import sys
     
 class PackageTrace:
 
@@ -68,13 +59,16 @@ class PackageTrace:
         """
         get_carriers = "https://apis.tracker.delivery/carriers"
 
+
         try:
-            respones_carriers = requests.get(get_carriers)
-            if respones_carriers.status_code != 200:
-                raise ConnectionError
-
-            self.carriers['carriers'] = respones_carriers.json()
-
+            req = urllib.request.Request(get_carriers)
+            with urllib.request.urlopen(req) as response:
+                if response.status == 200:
+                    self.carriers['carriers'] = json.loads(response.read().decode('utf-8'))
+                else:
+                    raise ConnectionError
+            
+            
             with open('carriers.json', 'w', encoding='utf-8') as f:
                 f.write(json.dumps(self.carriers, ensure_ascii=False, indent='\t'))
                 f.close()
@@ -94,16 +88,18 @@ class PackageTrace:
         try:
             package_num = self.package_num.replace("-", "")
             get_parcel = f"https://apis.tracker.delivery/carriers/{self.package_carrier_id}/tracks/{package_num}"
-            respones_parsel = requests.get(get_parcel)
+            
+            req = urllib.request.Request(get_parcel)
+            with urllib.request.urlopen(req) as response:
+                if response.status == 200:
+                    self.package_response_result = json.loads(response.read().decode('utf-8'))
+                else:
+                    raise ConnectionError
 
-            if respones_parsel.status_code != 200:
-                raise ConnectionError
-
-            self.package_response_result = respones_parsel.json()
             self.package_response_result["id"] = {"num": self.package_num, "carrier_id": self.package_carrier_id, "name": self.package_name}
             
         except ConnectionError as e:
-            sys.exit(f"null data, raised http code: {respones_parsel.status_code}")
+            sys.exit(f"null data, raised http code: {respones.status}")
 
 
     def _database_commit(self):
